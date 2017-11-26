@@ -1,5 +1,6 @@
 #include "WirelessNetworkList.h"
 
+WirelessNetworkList WirelessNetworkList::inst;
 
 WirelessNetworkList::WirelessNetworkList()
 {
@@ -43,11 +44,22 @@ vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkList::getAvailableNetworks(GUID in
 
 string WirelessNetworkList::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
 {
-	PWLAN_BSS_LIST list;
-	WlanGetNetworkBssList(hClient, &interfaceGuid, ssid, dot11_BSS_type_infrastructure, true, NULL, &list);
+	WLAN_BSS_ENTRY info = getBssInfo(interfaceGuid, ssid);
 	char macStr[18];
 	snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-		list->wlanBssEntries[0].dot11Bssid[0], list->wlanBssEntries[0].dot11Bssid[1], list->wlanBssEntries[0].dot11Bssid[2], list->wlanBssEntries[0].dot11Bssid[3], list->wlanBssEntries[0].dot11Bssid[4], list->wlanBssEntries[0].dot11Bssid[5]);
+		info.dot11Bssid[0], info.dot11Bssid[1], info.dot11Bssid[2], info.dot11Bssid[3], info.dot11Bssid[4], info.dot11Bssid[5]);
 	return string(macStr);
 
+}
+
+WLAN_BSS_ENTRY WirelessNetworkList::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid)
+{
+	PWLAN_BSS_LIST list;
+	WlanGetNetworkBssList(hClient, &interfaceGuid, ssid, dot11_BSS_type_infrastructure, true, NULL, &list);
+	return list->wlanBssEntries[0];
+}
+
+WirelessNetworkList WirelessNetworkList::getInstance()
+{
+	return inst;
 }

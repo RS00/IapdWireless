@@ -10,10 +10,13 @@ using namespace std;
 class WirelessNetworkList
 {
 private:
+	static WirelessNetworkList inst;
 	HANDLE hClient;
 	DWORD currentVersion;
-public:
+	WLAN_BSS_ENTRY getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid);
 	WirelessNetworkList();
+public:
+	static WirelessNetworkList getInstance();
 	vector<WLAN_INTERFACE_INFO> getWlanInterfaces();
 	vector<WLAN_AVAILABLE_NETWORK> getAvailableNetworks(GUID interfaceGuid);
 	string getBssId(GUID interfaceGuid, PDOT11_SSID ssid);
