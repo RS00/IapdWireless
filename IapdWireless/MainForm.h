@@ -11,10 +11,10 @@
 #define LISTVIEW_COL2 "MAC (BSS ID)"
 #define LISTVIEW_COL3 "Качество"
 #define LISTVIEW_COL4 "Тип аутентификации"
-#define LISTVIEW_COL1_WIDTH 130
-#define LISTVIEW_COL2_WIDTH 200
-#define LISTVIEW_COL3_WIDTH 70
-#define LISTVIEW_COL4_WIDTH 170
+#define LISTVIEW_COL1_WIDTH 100
+#define LISTVIEW_COL2_WIDTH 150
+#define LISTVIEW_COL3_WIDTH 90
+#define LISTVIEW_COL4_WIDTH 215
 
 
 
@@ -33,7 +33,7 @@ namespace IapdWireless {
 		ListView ^list;
 		System::ComponentModel::Container ^components;
 		
-		//void InitList();
+		void InitList();
 		void InitializeComponent();
 	
 	protected:

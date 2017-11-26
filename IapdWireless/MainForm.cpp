@@ -32,4 +32,25 @@ void MainForm::InitializeComponent()
 	list->Columns->Add(LISTVIEW_COL3, LISTVIEW_COL3_WIDTH, HorizontalAlignment::Center);
 	list->Columns->Add(LISTVIEW_COL4, LISTVIEW_COL4_WIDTH, HorizontalAlignment::Center);
 	Controls->Add(list);
+	InitList();
+}
+
+void MainForm::InitList()
+{
+	WirelessNetworkList wireless = WirelessNetworkList::getInstance();
+	vector<WirelessNetwork> wirelessVector = wireless.getAvailableNetworksVector();
+	list->Items->Clear();
+	for (int i = 0; i < wirelessVector.size(); i++)
+	{
+		WirelessNetwork net = wirelessVector.at(i);
+		String ^name = gcnew String(net.getName().c_str());
+		String ^mac = gcnew String(net.getMAC().c_str());
+		String ^quality = gcnew String(net.getQuality().c_str());
+		String ^authType = gcnew String(net.getAuthType().c_str());
+		ListViewItem ^item = gcnew ListViewItem(name);
+		item->SubItems->Add(mac);
+		item->SubItems->Add(quality);
+		item->SubItems->Add(authType);
+		list->Items->Add(item);
+	}
 }

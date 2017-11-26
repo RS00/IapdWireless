@@ -4,7 +4,7 @@
 WirelessNetwork::WirelessNetwork(string name, string bssid, string quality, string type)
 {
 	this->name = name;
-	this->bssId = bssId;
+	this->bssId = bssid;
 	this->quality = quality;
 	this->authType = type;
 }
@@ -76,5 +76,13 @@ string WirelessNetwork::getAuthType(DWORD dot11_code)
 	}
 
 	}
+	return result;
+}
+
+string WirelessNetwork::calculateQuality(ULONG quality)
+{
+	string result = to_string(quality);
+	int db = -100 + 0.5 * quality;
+	result += "% (" + to_string(db) + " dbm)";
 	return result;
 }

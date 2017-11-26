@@ -77,7 +77,7 @@ vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
 		string name((char *) availableNet[i].dot11Ssid.ucSSID);
 		string bssid = getBssId(interfaces[0].InterfaceGuid, &availableNet[i].dot11Ssid);
 		ULONG quality = availableNet[i].wlanSignalQuality;
-		string qualityStr = to_string(quality);
+		string qualityStr = WirelessNetwork::calculateQuality(quality);
 		string authType = WirelessNetwork::getAuthType(availableNet[i].dot11DefaultAuthAlgorithm);
 		WirelessNetwork net(name, bssid, qualityStr, authType);
 		result.push_back(net);

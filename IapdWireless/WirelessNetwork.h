@@ -14,6 +14,7 @@ private:
 	string quality;
 	string authType;
 public:
+	static string calculateQuality(ULONG quality);
 	static string getAuthType(DWORD dot11_code);
 	string getName();
 	string getMAC();
