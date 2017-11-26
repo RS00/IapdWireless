@@ -10,6 +10,7 @@ WirelessNetworkList::WirelessNetworkList()
 
 WirelessNetworkList::~WirelessNetworkList()
 {
+	WlanCloseHandle(hClient, NULL);
 }
 
 
@@ -62,4 +63,24 @@ WLAN_BSS_ENTRY WirelessNetworkList::getBssInfo(GUID interfaceGuid, PDOT11_SSID s
 WirelessNetworkList WirelessNetworkList::getInstance()
 {
 	return inst;
+}
+
+vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
+{
+	vector<WirelessNetwork> result;
+	vector<WLAN_INTERFACE_INFO> interfaces = getWlanInterfaces();
+	if (interfaces.size() == 0)
+		return result;
+	vector<WLAN_AVAILABLE_NETWORK> availableNet = getAvailableNetworks(interfaces[0].InterfaceGuid);
+	for (int i = 0; i < availableNet.size(); i++)
+	{
+		string name((char *) availableNet[i].dot11Ssid.ucSSID);
+		string bssid = getBssId(interfaces[0].InterfaceGuid, &availableNet[i].dot11Ssid);
+		ULONG quality = availableNet[i].wlanSignalQuality;
+		string qualityStr = to_string(quality);
+		string authType = WirelessNetwork::getAuthType(availableNet[i].dot11DefaultAuthAlgorithm);
+		WirelessNetwork net(name, bssid, qualityStr, authType);
+		result.push_back(net);
+	}
+	return result;
 }

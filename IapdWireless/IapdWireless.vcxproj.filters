@@ -24,12 +24,18 @@
     <ClCompile Include="WirelessNetworkList.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="WirelessNetwork.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="WirelessNetworkList.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WirelessNetwork.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

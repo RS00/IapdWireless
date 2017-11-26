@@ -32,7 +32,8 @@ namespace IapdWireless {
 	private:
 		ListView ^list;
 		System::ComponentModel::Container ^components;
-	
+		
+		//void InitList();
 		void InitializeComponent();
 	
 	protected:
