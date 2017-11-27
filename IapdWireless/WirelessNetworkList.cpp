@@ -1,16 +1,12 @@
 #include "WirelessNetworkList.h"
 
-WirelessNetworkList WirelessNetworkList::inst;
-
 WirelessNetworkList::WirelessNetworkList()
 {
-	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
 }
 
 
 WirelessNetworkList::~WirelessNetworkList()
 {
-	WlanCloseHandle(hClient, NULL);
 }
 
 
@@ -36,6 +32,8 @@ vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkList::getAvailableNetworks(GUID in
 		0,
 		NULL,
 		&pAvList);
+	if (!pAvList)
+		return result;
 	for (int i = 0; i < pAvList->dwNumberOfItems; i++)
 	{
 		result.push_back(pAvList->Network[i]);
@@ -50,7 +48,6 @@ string WirelessNetworkList::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
 	snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
 		info.dot11Bssid[0], info.dot11Bssid[1], info.dot11Bssid[2], info.dot11Bssid[3], info.dot11Bssid[4], info.dot11Bssid[5]);
 	return string(macStr);
-
 }
 
 WLAN_BSS_ENTRY WirelessNetworkList::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid)
@@ -60,13 +57,9 @@ WLAN_BSS_ENTRY WirelessNetworkList::getBssInfo(GUID interfaceGuid, PDOT11_SSID s
 	return list->wlanBssEntries[0];
 }
 
-WirelessNetworkList WirelessNetworkList::getInstance()
-{
-	return inst;
-}
-
 vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
 {
+	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
 	vector<WirelessNetwork> result;
 	vector<WLAN_INTERFACE_INFO> interfaces = getWlanInterfaces();
 	if (interfaces.size() == 0)
@@ -79,8 +72,32 @@ vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
 		ULONG quality = availableNet[i].wlanSignalQuality;
 		string qualityStr = WirelessNetwork::calculateQuality(quality);
 		string authType = WirelessNetwork::getAuthType(availableNet[i].dot11DefaultAuthAlgorithm);
-		WirelessNetwork net(name, bssid, qualityStr, authType);
+		WirelessNetwork net(name, bssid, qualityStr, authType, availableNet[i]);
 		result.push_back(net);
 	}
+	WlanCloseHandle(hClient, NULL);
 	return result;
+}
+
+bool WirelessNetworkList::isConnected()
+{
+	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
+	vector<WLAN_INTERFACE_INFO> interfaces = getWlanInterfaces();
+	if (interfaces.size() == 0 || interfaces[0].isState == wlan_interface_state_disconnected)
+		return false;
+	WlanCloseHandle(hClient, NULL);
+	return true;
+}
+
+GUID WirelessNetworkList::getInterfaceGUID()
+{
+	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
+	GUID res;
+	vector<WLAN_INTERFACE_INFO> interfaces = getWlanInterfaces();
+	if (interfaces.size() > 0)
+	{
+		res = interfaces[0].InterfaceGuid;
+	}
+	WlanCloseHandle(hClient, NULL);
+	return res;
 }
