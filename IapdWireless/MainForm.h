@@ -1,5 +1,5 @@
 #pragma once
-#include "WirelessNetworkList.h"
+#include "WirelessNetworkInterface.h"
 #include <msclr\marshal_cppstd.h>
 #include <stdlib.h>
 using namespace msclr::interop;

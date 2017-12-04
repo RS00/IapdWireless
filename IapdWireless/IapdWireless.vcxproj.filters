@@ -21,10 +21,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="WirelessNetworkList.cpp">
+    <ClCompile Include="WirelessNetwork.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="WirelessNetwork.cpp">
+    <ClCompile Include="WirelessNetworkInterface.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClInclude Include="MainForm.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="WirelessNetworkList.h">
+    <ClInclude Include="WirelessNetwork.h">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="WirelessNetwork.h">
+    <ClInclude Include="WirelessNetworkInterface.h">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

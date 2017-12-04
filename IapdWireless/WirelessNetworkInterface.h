@@ -8,7 +8,7 @@
 #pragma comment(lib, "Wlanapi.lib")
 using namespace std;
 
-class WirelessNetworkList
+class WirelessNetworkInterface
 {
 private:
 	HANDLE hClient;
@@ -19,10 +19,10 @@ private:
 	string getBssId(GUID interfaceGuid, PDOT11_SSID ssid);
 	
 public:
-	WirelessNetworkList();
+	WirelessNetworkInterface();
 	bool isConnected();
 	GUID getInterfaceGUID();
 	vector<WirelessNetwork> getAvailableNetworksVector();
-	~WirelessNetworkList();
+	~WirelessNetworkInterface();
 };
 

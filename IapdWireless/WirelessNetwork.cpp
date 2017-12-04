@@ -54,7 +54,7 @@ string WirelessNetwork::getAuthType(DWORD dot11_code)
 
 	case DOT11_AUTH_ALGO_WPA:
 	{
-		result = "Wi-Fi Protected Access (WPA)";
+		result = "WPA";
 		break;
 	}
 
@@ -66,13 +66,13 @@ string WirelessNetwork::getAuthType(DWORD dot11_code)
 
 	case DOT11_AUTH_ALGO_RSNA:
 	{
-		result = "Robust Security Network Association (RSNA)";
+		result = "WPA2";
 		break;
 	}
 
 	case DOT11_AUTH_ALGO_RSNA_PSK:
 	{
-		result = "RSNA-PSK";
+		result = "WPA2-PSK";
 		break;
 	}
 

@@ -146,14 +146,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="WirelessNetwork.cpp" />
-    <ClCompile Include="WirelessNetworkList.cpp" />
+    <ClCompile Include="WirelessNetworkInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="WirelessNetwork.h" />
-    <ClInclude Include="WirelessNetworkList.h" />
+    <ClInclude Include="WirelessNetworkInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -47,7 +47,7 @@ void MainForm::InitializeComponent()
 	Controls->Add(connectButton);
 	Controls->Add(disconnectButton);
 	Controls->Add(passwordBox);
-	WirelessNetworkList wireless;
+	WirelessNetworkInterface wireless;
 	if (wireless.isConnected())
 	{
 		disconnectButton->Enabled = true;
@@ -76,7 +76,7 @@ void MainForm::InitializeComponent()
 
 void MainForm::InitList()
 {
-	WirelessNetworkList wireless;
+	WirelessNetworkInterface wireless;
 	vector<WirelessNetwork> wirelessVector = wireless.getAvailableNetworksVector();
 	if (wireless.isConnected())
 	{
@@ -131,7 +131,7 @@ void MainForm::Connect_Click(System::Object^ Sender, EventArgs ^e)
 	ListViewItem ^item = list->SelectedItems[0];
 	String ^t = item->Text;
 
-	WirelessNetworkList wireless;
+	WirelessNetworkInterface wireless;
 	vector<WirelessNetwork> wirelessVector = wireless.getAvailableNetworksVector();
 	for (vector<WirelessNetwork>::iterator it = wirelessVector.begin(); it != wirelessVector.end(); it++)
 	{
@@ -159,9 +159,9 @@ void MainForm::Connect_Click(System::Object^ Sender, EventArgs ^e)
 
 void MainForm::Disconnect_Click(System::Object^ Sender, EventArgs ^e)
 {
-	WirelessNetworkList net;
-	GUID g =net.getInterfaceGUID();
-	WirelessNetwork::disconnect(g);
+	WirelessNetworkInterface net;
+	GUID guid = net.getInterfaceGUID();
+	WirelessNetwork::disconnect(guid);
 	disconnectButton->Enabled = false;
 	connectButton->Enabled = true;
 }

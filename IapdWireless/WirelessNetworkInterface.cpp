@@ -1,16 +1,16 @@
-#include "WirelessNetworkList.h"
+#include "WirelessNetworkInterface.h"
 
-WirelessNetworkList::WirelessNetworkList()
+WirelessNetworkInterface::WirelessNetworkInterface()
 {
 }
 
 
-WirelessNetworkList::~WirelessNetworkList()
+WirelessNetworkInterface::~WirelessNetworkInterface()
 {
 }
 
 
-vector<WLAN_INTERFACE_INFO> WirelessNetworkList::getWlanInterfaces()
+vector<WLAN_INTERFACE_INFO> WirelessNetworkInterface::getWlanInterfaces()
 {
 	PWLAN_INTERFACE_INFO_LIST pIfList = NULL;
 
@@ -23,7 +23,7 @@ vector<WLAN_INTERFACE_INFO> WirelessNetworkList::getWlanInterfaces()
 	return result;
 }
 
-vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkList::getAvailableNetworks(GUID interfaceGuid)
+vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkInterface::getAvailableNetworks(GUID interfaceGuid)
 {
 	PWLAN_AVAILABLE_NETWORK_LIST pAvList = NULL;
 	vector<WLAN_AVAILABLE_NETWORK> result;
@@ -41,7 +41,7 @@ vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkList::getAvailableNetworks(GUID in
 	return result;
 }
 
-string WirelessNetworkList::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
+string WirelessNetworkInterface::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
 {
 	WLAN_BSS_ENTRY info = getBssInfo(interfaceGuid, ssid);
 	char macStr[18];
@@ -50,14 +50,14 @@ string WirelessNetworkList::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
 	return string(macStr);
 }
 
-WLAN_BSS_ENTRY WirelessNetworkList::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid)
+WLAN_BSS_ENTRY WirelessNetworkInterface::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid)
 {
 	PWLAN_BSS_LIST list;
 	WlanGetNetworkBssList(hClient, &interfaceGuid, ssid, dot11_BSS_type_infrastructure, true, NULL, &list);
 	return list->wlanBssEntries[0];
 }
 
-vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
+vector<WirelessNetwork> WirelessNetworkInterface::getAvailableNetworksVector()
 {
 	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
 	vector<WirelessNetwork> result;
@@ -79,7 +79,7 @@ vector<WirelessNetwork> WirelessNetworkList::getAvailableNetworksVector()
 	return result;
 }
 
-bool WirelessNetworkList::isConnected()
+bool WirelessNetworkInterface::isConnected()
 {
 	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
 	vector<WLAN_INTERFACE_INFO> interfaces = getWlanInterfaces();
@@ -89,7 +89,7 @@ bool WirelessNetworkList::isConnected()
 	return true;
 }
 
-GUID WirelessNetworkList::getInterfaceGUID()
+GUID WirelessNetworkInterface::getInterfaceGUID()
 {
 	WlanOpenHandle(WLAN_CLIENT_VERSION, NULL, &currentVersion, &hClient);
 	GUID res;
