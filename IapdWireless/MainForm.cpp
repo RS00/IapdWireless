@@ -171,9 +171,16 @@ void MainForm::Disconnect_Click(System::Object^ Sender, EventArgs ^e)
 int MainForm::GetSelectedIndex()
 {
 	int selectedIndex = -1;
-	if (list->SelectedItems->Count > 0)
+	try
 	{
-		selectedIndex = list->Items->IndexOf(list->SelectedItems[0]);
+		if (list->SelectedItems->Count > 0)
+		{
+			selectedIndex = list->Items->IndexOf(list->SelectedItems[0]);
+		}
+	}
+	catch (...)
+	{
+		selectedIndex = 0;
 	}
 	return selectedIndex;
 }

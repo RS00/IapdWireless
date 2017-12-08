@@ -13,10 +13,10 @@ class WirelessNetworkInterface
 private:
 	HANDLE hClient;
 	DWORD currentVersion;
-	WLAN_BSS_ENTRY getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid);
+	WLAN_BSS_ENTRY getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid, bool isSecured);
 	vector<WLAN_AVAILABLE_NETWORK> getAvailableNetworks(GUID interfaceGuid);
 	vector<WLAN_INTERFACE_INFO> getWlanInterfaces();
-	string getBssId(GUID interfaceGuid, PDOT11_SSID ssid);
+	string getBssId(GUID interfaceGuid, PDOT11_SSID ssid, bool isSecured);
 	
 public:
 	WirelessNetworkInterface();

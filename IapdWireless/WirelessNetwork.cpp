@@ -96,15 +96,15 @@ bool WirelessNetwork::connect(GUID guid, string password)
 	WLAN_CONNECTION_PARAMETERS params;
 	string profileOpen("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>" + name + "</name><SSIDConfig><SSID><name>" + name + "</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>open</authentication><encryption>none</encryption><useOneX>false</useOneX></authEncryption></security></MSM></WLANProfile>");
 	string profile("<?xml version=\"1.0\"?><WLANProfile xmlns=\"http://www.microsoft.com/networking/WLAN/profile/v1\"><name>" + name + "</name><SSIDConfig><SSID><name>" + name + "</name></SSID></SSIDConfig><connectionType>ESS</connectionType><connectionMode>auto</connectionMode><autoSwitch>false</autoSwitch><MSM><security><authEncryption><authentication>WPA2PSK</authentication><encryption>AES</encryption><useOneX>false</useOneX></authEncryption><sharedKey><keyType>passPhrase</keyType><protected>false</protected><keyMaterial>" + password + "</keyMaterial></sharedKey></security></MSM></WLANProfile>");
-	wstring wide(profileOpen.begin(), profileOpen.end());
+	wstring profileOpenWide(profileOpen.begin(), profileOpen.end());
 	params.wlanConnectionMode = wlan_connection_mode_temporary_profile;
 	params.pDot11Ssid = &net.dot11Ssid;
 	params.pDesiredBssidList = NULL;
-	params.strProfile = wide.c_str();
+	params.strProfile = profileOpenWide.c_str();
 	params.dot11BssType = net.dot11BssType;
 	params.dwFlags = WLAN_CONNECTION_HIDDEN_NETWORK;
 	int res = -1;
-	if (this->authType == "802.11 Open System authentication")
+	if (this->authType == TYPE_OPEN)
 		res = WlanConnect(hClient, &guid, &params, NULL);
 	else
 	{

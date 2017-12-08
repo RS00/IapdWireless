@@ -13,9 +13,9 @@ WirelessNetworkInterface::~WirelessNetworkInterface()
 vector<WLAN_INTERFACE_INFO> WirelessNetworkInterface::getWlanInterfaces()
 {
 	PWLAN_INTERFACE_INFO_LIST pIfList = NULL;
-
-	WlanEnumInterfaces(hClient, NULL, &pIfList);
 	vector<WLAN_INTERFACE_INFO> result;
+	if (WlanEnumInterfaces(hClient, NULL, &pIfList) != ERROR_SUCCESS)
+		return result;
 	for (int i = 0; i < pIfList->dwNumberOfItems; i++)
 	{
 		result.push_back(pIfList->InterfaceInfo[i]);
@@ -41,19 +41,19 @@ vector<WLAN_AVAILABLE_NETWORK> WirelessNetworkInterface::getAvailableNetworks(GU
 	return result;
 }
 
-string WirelessNetworkInterface::getBssId(GUID interfaceGuid, PDOT11_SSID ssid)
+string WirelessNetworkInterface::getBssId(GUID interfaceGuid, PDOT11_SSID ssid, bool isSecured)
 {
-	WLAN_BSS_ENTRY info = getBssInfo(interfaceGuid, ssid);
+	WLAN_BSS_ENTRY info = getBssInfo(interfaceGuid, ssid, isSecured);
 	char macStr[18];
 	snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
 		info.dot11Bssid[0], info.dot11Bssid[1], info.dot11Bssid[2], info.dot11Bssid[3], info.dot11Bssid[4], info.dot11Bssid[5]);
 	return string(macStr);
 }
 
-WLAN_BSS_ENTRY WirelessNetworkInterface::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid)
+WLAN_BSS_ENTRY WirelessNetworkInterface::getBssInfo(GUID interfaceGuid, PDOT11_SSID ssid, bool isSecured)
 {
 	PWLAN_BSS_LIST list;
-	WlanGetNetworkBssList(hClient, &interfaceGuid, ssid, dot11_BSS_type_infrastructure, true, NULL, &list);
+	WlanGetNetworkBssList(hClient, &interfaceGuid, ssid, dot11_BSS_type_infrastructure, isSecured, NULL, &list);
 	return list->wlanBssEntries[0];
 }
 
@@ -68,10 +68,10 @@ vector<WirelessNetwork> WirelessNetworkInterface::getAvailableNetworksVector()
 	for (int i = 0; i < availableNet.size(); i++)
 	{
 		string name((char *) availableNet[i].dot11Ssid.ucSSID);
-		string bssid = getBssId(interfaces[0].InterfaceGuid, &availableNet[i].dot11Ssid);
 		ULONG quality = availableNet[i].wlanSignalQuality;
 		string qualityStr = WirelessNetwork::calculateQuality(quality);
 		string authType = WirelessNetwork::getAuthType(availableNet[i].dot11DefaultAuthAlgorithm);
+		string bssid = getBssId(interfaces[0].InterfaceGuid, &availableNet[i].dot11Ssid, authType != "802.11 Open System authentication");
 		WirelessNetwork net(name, bssid, qualityStr, authType, availableNet[i]);
 		result.push_back(net);
 	}

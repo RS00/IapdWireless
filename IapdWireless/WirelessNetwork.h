@@ -4,6 +4,7 @@
 #include <wchar.h>
 #include <Wlanapi.h>
 #define WLAN_CLIENT_VERSION 2
+#define TYPE_OPEN "802.11 Open System authentication"
 #pragma comment(lib, "Wlanapi.lib")
 
 using namespace std;
